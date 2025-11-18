@@ -17,22 +17,22 @@
     - [Context](#context)
     - [Instruction Data](#instruction-data)
   - [Errors](#errors)
-    - [Anchor Intrernal Errors](#anchor-intrernal-errors)
+    - [Anchor Internal Errors](#anchor-internal-errors)
     - [Custom Errors](#custom-errors)
 ---
 # Solana Program Model
 
 ## Accounts
 
-The essencial building blocks of the Solana Programming model are the accounts. They can store either the data or programs, which splits them into two categories:
+The essential building blocks of the Solana Programming model are the accounts. They can store either the data or programs, which splits them into two categories:
 
   - **Executable accounts** - accounts that store native or user-created programs
   - **Non-executable accounts** - accounts used for data storage
 
-Accounts are identified by their address - **`key`** (a unique 32-byte `PubKey`). Each account has the **`owner`** (also of the `Pubkey` type), it's **`lamports`** balance, boolean **`executable`** flag  and **`data`** (where depending on the executable flag, either program or data is stored). 
+Accounts are identified by their address - **`key`** (a unique 32-byte `PubKey`). Each account has the **`owner`** (also of the `Pubkey` type), its **`lamports`** balance, boolean **`executable`** flag  and **`data`** (where depending on the executable flag, either program or data is stored).
 
 > [!NOTE]
-> Accounts can be reused, meaning that the account which was at one point used to store data can, after it was properly closed, be used againt to store a program.
+> Accounts can be reused, meaning that the account which was at one point used to store data can, after it was properly closed, be used again to store a program.
 
 ## Program types
 
@@ -45,7 +45,7 @@ As we outlined in the accounts explanation, there are two types of programs:
 > Native programs are only updated as a part of migration from one Solana runtime version to another. On-chain programs can be updated by their upgrade authority.
 
 > [!NOTE]
-> There are currently 3 types of BPF Loaders and only one of them allows you to upgrade the deployed program - `BPFLoaderUpgradeab1e`. Official docs are not always up-to-date on this, so if you want to see current number of existing BPF Loaders, see [source code](https://github.com/solana-labs/solana/tree/master/sdk/program/src) and look for `bpf_loader*`.
+> There are currently 3 types of BPF Loaders and only one of them allows you to upgrade the deployed program - `BPFLoaderUpgradeab1e`. Official docs are not always up-to-date on this, so if you want to see current number of existing BPF Loaders, see [source code](https://github.com/anza-xyz/solana-sdk/tree/master/program/src) and look for `bpf_loader*`.
 
 ## Entrypoint
 
@@ -207,11 +207,13 @@ pub struct Initialize<'info> {
 will result in an error similar to the following:
 
 ```text
-Error:
+Safety checks failed:
         /anchor/tests/unchecked/programs/unchecked/src/lib.rs:15:8
         Struct field "potentially_dangerous" is unsafe, but is not documented.
         Please add a `/// CHECK:` doc comment explaining why no checks through types are necessary.
-        See https://book.anchor-lang.com/anchor_in_depth/the_accounts_struct.html#safety-checks for more information.
+        Alternatively, for reasons like quick prototyping, you may disable the safety checks
+        by using the `skip-lint` option.
+        See https://www.anchor-lang.com/docs/the-accounts-struct#safety-checks for more information.
 ```
 
 To fix this, write a doc comment describing the potential security implications, e.g.:
@@ -323,7 +325,7 @@ There are two types of errors in anchor programs. `AnchorErrors` and `non-anchor
     - Custom Errors
 - Non-anchor errors
 
-### Anchor Intrernal Errors
+### Anchor Internal Errors
 
 > [!TIP]
 > [Anchor Internal Error Code Reference](https://docs.rs/anchor-lang/latest/anchor_lang/error/enum.ErrorCode.html)
